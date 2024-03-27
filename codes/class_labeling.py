@@ -1,8 +1,9 @@
 from PIL import Image
 from ultralytics import YOLO
 import os
+import shutil # 이미지 복사
 
-os.chdir('C:\\projects\\Tagging-System')
+
 
 # 사전 모델 불러오기 (상하의)
 model = YOLO('models\\TOP&BOTTOM.pt')
@@ -15,12 +16,24 @@ if not os.path.exists('new_label_data'):
 if not os.path.exists('new_label_data\\labels'):
     os.makedirs('new_label_data\\labels')
 
+# 이미지 파일 폴더 생성
+if not os.path.exists('new_label_data\\images'):
+    os.makedirs('new_label_data\\images')
+
 # 라벨 파일 폴더
 labels_dir = 'new_label_data\\labels'
 
 # 이미지 파일 폴더
-images_dir = 'new_label_data\\images'
-images_paths = [os.path.join(images_dir, img) for img in os.listdir(images_dir) if img.endswith(".png") or img.endswith("jpg")]
+target_images_dir = 'new_label_data\\images' # 복사할 폴더
+source_images_dir = 'test_images' # 원본 이미지 파일 폴더
+
+for filename in os.listdir(source_images_dir):
+    if filename.endswith('.png') or filename.endswith('jpg'):
+        source_path = os.path.join(source_images_dir, filename)
+        target_path = os.path.join(target_images_dir, filename)
+        shutil.copyfile(source_path, target_path)
+
+images_paths = [os.path.join(target_images_dir, img) for img in os.listdir(target_images_dir) if img.endswith(".png") or img.endswith("jpg")]
 
 # 클래스 파일 생성
 with open(f"{labels_dir}\\classes.txt", "w") as f:
@@ -30,7 +43,7 @@ with open(f"{labels_dir}\\classes.txt", "w") as f:
 # 객체 탐지 결과
 results = model(images_paths)
 
-
+#################### 각 이미지에 대한 라벨 데이터 생성 및 정규화 ####################
 # 각 이미지 파일
 for i in range(len(results)):
 
@@ -61,12 +74,16 @@ for i in range(len(results)):
             width = round(((x2 - x1) / img_width).item(), 6)
             height = round(((y2 - y1) / img_height).item(), 6)
 
-
             f.write(f"{cls_id} {x_center} {y_center} {width} {height}\n")
+#################################################################################
 
 # 설정 파일 생성
-with open("class_labeling\\dataset.yaml", "w") as f:
-    f.write(f"train: D:\\FRS-Tagging-System\\frs\\class_labeling\\images\n")  # 학습 이미지 경로
-    f.write(f"val: D:\\FRS-Tagging-System\\frs\\class_labeling\\images\n")  # 검증 이미지 경로
+if not os.path.exists('new_label_data\\dataset.yaml'):
+    # dataset.yaml 파일 생성 코드
+    f = open('new_label_data\\dataset.yaml', 'w')
+
+with open("new_label_data\\dataset.yaml", "w") as f:
+    f.write(f"train: images\n")  # 학습 이미지 경로
+    f.write(f"val: images\n")  # 검증 이미지 경로
     f.write(f"nc: {len(model.names)}\n")  # 클래스 개수
     f.write(f"names: {list(model.names.values())}\n")  # 클래스 이름
