@@ -55,6 +55,7 @@ for filename in os.listdir(source_images_dir):
 #################### 객체 탐지 결과 ####################
     
 results = model([os.path.join(target_images_dir, img) for img in image_files])
+model.predict(source='new_label_data//images', save=True)
 
 #################### 각 이미지에 대한 라벨 데이터 생성 ####################
 
