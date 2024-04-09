@@ -3,6 +3,10 @@ from ultralytics import YOLO
 import os
 import shutil
 
+# 테스트
+import string
+import random
+
 #################### 변수 선언 ####################
 
 # 클래스를 담을 배열
@@ -16,6 +20,9 @@ failed_image_count = 0
 
 # 사전 모델 불러오기 (상하의)
 model = YOLO('models//TOP&BOTTOM.pt')
+
+# 테스트
+alphabet = string.ascii_lowercase
 
 #################### 폴더 생성 및 주소 지정 ####################
 
@@ -74,8 +81,11 @@ for image_path, result in zip([os.path.join(target_images_dir, img) for img in i
         continue
 
     # 이미지와 함께 각각의 이미지 내에 존재하는 패션 아이템의 상의와 하의 종류 입력 받기 (테스트)
-    top_category = input("Enter the TOP category: ")
-    bottom_category = input("Enter the bottom category: ")
+    # top_category = input("Enter the TOP category: ")
+    # bottom_category = input("Enter the bottom category: ")
+
+    top_category = random.choice(alphabet[:13])
+    bottom_category = random.choice(alphabet[13:])
 
     # 새로운 클래스 추가
     if top_category not in class_mapping:
