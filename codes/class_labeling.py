@@ -24,21 +24,28 @@ model = YOLO('models//TOP&BOTTOM.pt')
 # 테스트 (상하의 무작위 알파벳 지정)
 alphabet = string.ascii_lowercase
 
+# 폴더명
+new_folder_name = 'new_label_data'
+new_folder_index = 1
+
 #################### 폴더 생성 및 주소 지정 ####################
 
 # 데이터 폴더 생성
-if not os.path.exists('new_label_data'):
-    os.makedirs('new_label_data')
+while os.path.exists(new_folder_name):
+    new_folder_name = f'new_label_data{new_folder_index}'
+    new_folder_index += 1
+
+os.makedirs(new_folder_name)
 
 # 라벨 데이터 폴더 생성
-if not os.path.exists('new_label_data//labels'):
-    os.makedirs('new_label_data//labels')
-labels_dir = 'new_label_data//labels'
+if not os.path.exists(f'new_label_data{new_folder_index}//labels'):
+    os.makedirs(f'new_label_data{new_folder_index}//labels')
+labels_dir = f'new_label_data{new_folder_index}//labels'
 
 # 이미지 파일 폴더 생성
-if not os.path.exists('new_label_data//images'):
-    os.makedirs('new_label_data//images')
-target_images_dir = 'new_label_data//images'  # 복사할 폴더
+if not os.path.exists(f'new_label_data{new_folder_index}//images'):
+    os.makedirs(f'new_label_data{new_folder_index}//images')
+target_images_dir = f'new_label_data{new_folder_index}//images'  # 복사할 폴더
 source_images_dir = 'test_images'  # 원본 이미지 파일 폴더
 
 # train, val, test 폴더 생성
@@ -49,9 +56,9 @@ source_images_dir = 'test_images'  # 원본 이미지 파일 폴더
 # val_dir = 'new_label_data//images//val'
 
 # 실패한 이미지 폴더
-if not os.path.exists('new_label_data//failed_images'):
-    os.makedirs('new_label_data//failed_images')
-failed_image_dir = 'new_label_data//failed_images'
+if not os.path.exists(f'new_label_data{new_folder_index}//failed_images'):
+    os.makedirs(f'new_label_data{new_folder_index}//failed_images')
+failed_image_dir = f'new_label_data{new_folder_index}//failed_images'
 
 # 클래스 파일 생성
 with open(f"{labels_dir}//classes.txt", "w") as f:
@@ -72,7 +79,7 @@ for filename in image_files:
 results = model([os.path.join(target_images_dir, img) for img in image_files])
 
 # 사전 모델 성능 확인용, 객체 탐지 결과 이미지 저장
-model.predict(source='new_label_data//images', save=True)
+# model.predict(source=f'new_label_data{new_folder_index}//images', save=True)
 
 #################### 각 이미지에 대한 라벨 데이터 생성 ####################
 
@@ -134,8 +141,8 @@ with open(f"{labels_dir}//classes.txt", "a") as f:
         f.write(f"{cls}\n")
 
 # dataset.yaml 파일 생성
-if not os.path.exists('new_label_data//dataset.yaml'):
-    with open("new_label_data//dataset.yaml", "w") as f:
+if not os.path.exists(f'new_label_data{new_folder_index}//dataset.yaml'):
+    with open(f"new_label_data{new_folder_index}//dataset.yaml", "w") as f:
         f.write(f"train: images//train\n")  # 학습 이미지 경로
         f.write(f"val: images//val\n")  # 검증 이미지 경로
         f.write(f"nc: {len(model.names) + len(additional_classes)}\n")  # 클래스 개수
