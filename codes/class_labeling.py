@@ -9,28 +9,34 @@ import random
 
 #################### 변수 선언 ####################
 
-# 클래스를 담을 배열
-class_mapping = []
-
-# 추가된 클래슬르 담을 배열
-additional_classes = []
-
-# 실패한 이미지 갯수
-failed_image_count = 0
-
 # 사전 모델 불러오기 (상하의)
 model = YOLO('models//TOP&BOTTOM.pt')
 
 # 테스트 (상하의 무작위 알파벳 지정)
 alphabet = string.ascii_lowercase
 
+# 클래스를 담을 배열
+class_mapping = []
+
+# 추가된 클래스를 담을 배열
+additional_classes = []
+
+# 실패한 이미지 갯수
+failed_image_count = 0
+
 # 폴더명
 new_folder_name = 'new_label_data'
 new_folder_index = 1
 
+
+
 #################### 폴더 생성 및 주소 지정 ####################
 
 # 데이터 폴더 생성
+if os.path.exists(f'new_label_data{new_folder_index}'):
+    os.makedirs(f'new_label_data{new_folder_index}')
+    new_folder_index += 1
+os.makedirs()
 while os.path.exists(new_folder_name):
     new_folder_name = f'new_label_data{new_folder_index}'
     new_folder_index += 1
@@ -74,6 +80,7 @@ for filename in image_files:
     shutil.copyfile(source_path, target_path)
 
 
+
 #################### 객체 탐지 결과 ####################
     
 results = model([os.path.join(target_images_dir, img) for img in image_files])
@@ -103,6 +110,7 @@ for image_path, result in zip([os.path.join(target_images_dir, img) for img in i
     # top_category = input("Enter the TOP category: ")
     # bottom_category = input("Enter the bottom category: ")
 
+    # 테스트 상의 및 하의 각각에 랜덤 알파벳 클래스 추가
     top_category = random.choice(alphabet[:13])
     bottom_category = random.choice(alphabet[13:])
 
@@ -115,7 +123,7 @@ for image_path, result in zip([os.path.join(target_images_dir, img) for img in i
         additional_classes.append(bottom_category)
 
     # 이미지당 객체에 대한 라벨 데이터 작성
-    with open(f"{labels_dir}//{images_name}.txt", "w") as f:
+    with open(f"{labels_dir}//{images_name}.txt", "a") as f:
         for obj in objects: 
             x1, y1, x2, y2 = obj
 
@@ -130,10 +138,10 @@ for image_path, result in zip([os.path.join(target_images_dir, img) for img in i
             height = round(((y2 - y1) / img_height).item(), 6)
 
             # 라벨 데이터 작성
-            images_name = os.path.splitext(os.path.basename(image_path))[0]
-            with open(f"{labels_dir}//{images_name}.txt", "w") as f:
-                f.write(f"{class_mapping.index(top_category)} {x_center} {y_center} {width} {height}\n")
-                f.write(f"{class_mapping.index(bottom_category)} {x_center} {y_center} {width} {height}\n")
+            # images_name = os.path.splitext(os.path.basename(image_path))[0]
+            # with open(f"{labels_dir}//{images_name}.txt", "w") as f:
+            f.write(f"{class_mapping.index(top_category)} {x_center} {y_center} {width} {height}\n")
+            f.write(f"{class_mapping.index(bottom_category)} {x_center} {y_center} {width} {height}\n")
 
 # 클래스 파일 업데이트
 with open(f"{labels_dir}//classes.txt", "a") as f:
@@ -143,7 +151,7 @@ with open(f"{labels_dir}//classes.txt", "a") as f:
 # dataset.yaml 파일 생성
 if not os.path.exists(f'new_label_data{new_folder_index}//dataset.yaml'):
     with open(f"new_label_data{new_folder_index}//dataset.yaml", "w") as f:
-        f.write(f"train: images//train\n")  # 학습 이미지 경로
-        f.write(f"val: images//val\n")  # 검증 이미지 경로
+        f.write(f"train: images\n")  # 학습 이미지 경로
+        f.write(f"val: images\n")  # 검증 이미지 경로
         f.write(f"nc: {len(model.names) + len(additional_classes)}\n")  # 클래스 개수
         f.write(f"names: {list(model.names.values()) + additional_classes}\n")  # 클래스 이름
