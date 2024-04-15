@@ -3,15 +3,15 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 import os
 
-path = 'C:/FRS/codes/chromedriver.exe'
+path = './chromedriver.exe'
 driver = webdriver.Chrome(path)
 
  # 크롤링 시작 페이지
 page_num = 1
  # 마지막 페이지 설정
-last_page_num = 1
-year = '2022'
-month = 11
+last_page_num = 10
+year = '2023'
+month = 10
  # 정렬 순서
 ordw = 'inc'
 
