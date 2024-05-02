@@ -97,6 +97,8 @@ bottom_class_index = class_mapping.index('BOTTOM')
 # 각 이미지를 사전 모델을 통해 객체 탐지
 results = model([os.path.join(target_images_dir, img) for img in image_files])
 
+# model.predict(source=f'new_label_data{new_folder_index}//images', save=True)
+
 
 
 #################### 각 이미지에 대한 라벨 데이터 생성 ####################
@@ -108,18 +110,18 @@ for image_path, result in zip([os.path.join(target_images_dir, img) for img in i
 
     # 이미지 이름 뽑아오기
     images_name = os.path.splitext(os.path.basename(image_path))[0]
-    print(f"Image: {images_name}")
+    # print(f"Image: {images_name}")
 
     # 이미지당 탐지된 바운딩박스의 x, y 좌표
     objects = result.boxes.xyxy
-    print(f"obejcts:{objects}")
+    # print(f"obejcts:{objects}")
 
     # 객체 탐지 오류 이미지 걸러내기
-    if len(objects) != 2:
-        print("실패, 객체가 1개 또는 3개 이상 탐지됨.")
-        failed_image_count += 1
-        shutil.move(image_path, failed_image_dir)
-        continue
+    # if len(objects) != 2:
+    #     # print("실패, 객체가 1개 또는 3개 이상 탐지됨.")
+    #     failed_image_count += 1
+    #     shutil.move(image_path, failed_image_dir)
+    #     continue
 
     # 이미지당 객체에 대한 라벨 데이터 작성
     with open(f"{labels_dir}//{images_name}.txt", "w") as f:
@@ -128,9 +130,9 @@ for image_path, result in zip([os.path.join(target_images_dir, img) for img in i
         #     if top_class:
         
         for i, obj in enumerate(objects):
-            print(f'class_name: {result.names[0], result.names[1]}')
-            print(f'obj: {obj}')
-            print(f'box_class: {result.boxes.cls[0].item(), result.boxes.cls[1].item()}')
+            # print(f'class_name: {result.names[0], result.names[1]}')
+            # print(f'obj: {obj}')
+            # print(f'box_class: {result.boxes.cls[0].item(), result.boxes.cls[1].item()}')
 
             # 탐지된 객체의 클래스 인덱스 번호
             # first_box_class = int(result.boxes.cls[0].item())

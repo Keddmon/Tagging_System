@@ -6,3 +6,9 @@ runs
 .DS_Store
 image
 chromedriver.exe
+new_label_data1
+images1
+images2
+images3
+forPretrainedImages
+forPretrainedImages/train/images
