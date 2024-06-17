@@ -2,7 +2,6 @@ from fastapi import APIRouter
 from pydantic import BaseModel
 from ultralytics import YOLO
 from PIL import Image
-import string
 import os
 import shutil
 import math
@@ -31,13 +30,13 @@ async def class_labeling(request: ClassLabelingDir):
     image_files = request.image_files
     json_files = request.json_files
 
-    # 테스트용 (이후 지우기)
-    alphabet = string.ascii_lowercase
-
     model = YOLO(os.path.join(os.path.abspath(os.path.dirname(__file__)), 'TOP&BOTTOM(ver.4).pt'))
 
     class_mapping = []
     failed_images_count = 0
+    
+    # 임시 테스트용: JSON 파일 정렬
+    json_files.sort()
 
     # 전체 이미지 수를 배치 크기만큼 나눠서 진행
     batch_size = 100

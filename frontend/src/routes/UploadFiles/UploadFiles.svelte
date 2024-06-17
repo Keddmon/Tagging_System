@@ -16,8 +16,8 @@
     /**
      * setting으로 이동
      */
-    const goSetting = () => {
-        push("/setting");
+    const goTest = () => {
+        push("/boxtest");
     };
 
     /**
@@ -195,7 +195,11 @@
         </div>
     </div>
     <div class="uploadfiles-btn-wrap">
+        <button on:click={goBack}>뒤로가기</button>
         <button on:click={testAPI}>실행</button>
+    </div>
+    <div class="uploadfiles-btn-wrap">
+        <button on:click={goTest}>JSON 생성</button>
     </div>
     <div class="system-info-wrap">
         <span class="system-info-title">

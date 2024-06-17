@@ -1,0 +1,30 @@
+.boxtest-container {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    gap: 1rem;
+}
+
+.boxtest-container .boxtest-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
+
+.boxtest-container .input-tag {
+    display: flex;
+    justify-content: center;
+}
+
+.boxtest-container .boxtest-btn-box {
+    padding-top: 1rem;
+
+    display: flex;
+    flex-direction: column;
+
+    gap: 1rem;
+}  

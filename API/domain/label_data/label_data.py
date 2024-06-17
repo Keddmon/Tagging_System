@@ -27,7 +27,7 @@ async def label_data(request: LabelDataDir):
             f.write(f'{cls}\n')
 
     with open(os.path.join(target_dir, 'dataset.yaml'), 'w') as f:
-        f.write(f'train: {images_dir}\n')
-        f.write(f'val: images\n')
+        f.write(f'train: {os.path.abspath(images_dir)}\n')
+        f.write(f'val: {os.path.abspath(images_dir)}\n')
         f.write(f'nc: {len(class_mapping)}\n')
         f.write(f'names: {class_mapping}\n')
