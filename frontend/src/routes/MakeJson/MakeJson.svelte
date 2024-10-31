@@ -1,22 +1,17 @@
 <script>
-    import "./BoxTest.css";
+    import { push } from "svelte-spa-router";
+    import "./MakeJson.css";
 
-    let imageName = '';
-    let topCategory = '';
-    let bottomCategory = '';
+    let imageName = "";
+    let topCategory = "";
+    let bottomCategory = "";
 
-    const testInput = () => {
-        console.log(imageName)
-        console.log(topCategory)
-        console.log(bottomCategory)
-    }
+    const goBack = () => {
+        push('/uploadfiles');
+    };
 
     const makeJson = async () => {
         try {
-            
-            console.log(imageName)
-            console.log(topCategory)
-            console.log(bottomCategory)
 
             const makeJsonRes = await fetch(
                 "http://127.0.0.1:8000/api/makejson/make-json",
@@ -34,15 +29,12 @@
             );
 
             if (!makeJsonRes.ok) {
-                throw new Error("Network Error")
+                throw new Error("Network Error");
             }
 
-            alert("성공")
-            console.log("성공")
-
+            alert("성공");
         } catch (error) {
             alert("ERROR");
-            console.log("실패")
         }
     };
 </script>
@@ -55,27 +47,19 @@
     </div>
     <div class="boxtest-name-input">
         <span class="input-tag">이미지명</span>
-        <input
-            type="text"
-            bind:value={imageName}
-        />
+        <input type="text" bind:value={imageName} />
     </div>
     <div class="boxtest-top-input">
         <span class="input-tag">상의</span>
-        <input
-            type="text"
-            bind:value={topCategory}
-        />
+        <input type="text" bind:value={topCategory} />
     </div>
     <div class="boxtest-bottom-input">
         <span class="input-tag">하의</span>
-        <input
-            type="text"
-            bind:value={bottomCategory}
-        />
+        <input type="text" bind:value={bottomCategory} />
     </div>
     <span> 입력된 내용은 JSON으로 저장됩니다. </span>
     <div class="boxtest-btn-box">
         <button on:click={makeJson}> 확인 </button>
+        <button on:click={goBack}>뒤로가기</button>
     </div>
 </div>

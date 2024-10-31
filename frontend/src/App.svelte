@@ -1,17 +1,18 @@
 <script>
   import Router from "svelte-spa-router";
 
+  // 페이지 불러오가
   import Main from "./routes/Main/Main.svelte";
   import UploadFiles from "./routes/UploadFiles/UploadFiles.svelte";
-  import Setting from "./routes/Setting/Setting.svelte";
-  import BoxTest from "./routes/BoxTest/BoxTest.svelte";
+  import MakeJson from "./routes/MakeJson/MakeJson.svelte";
 
+  // 페에지 연결
   const routes = {
-    '/': Main,
-    '/uploadfiles': UploadFiles,
-    '/setting': Setting,
-    '/boxtest': BoxTest,
-  }
+    "/": Main,
+    "/uploadfiles": UploadFiles,
+    "/makejson": MakeJson,
+  };
 </script>
 
-<Router {routes}/>
+<!-- 라우터 연결 -->
+<Router {routes} />

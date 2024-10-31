@@ -16,8 +16,8 @@
     /**
      * setting으로 이동
      */
-    const goTest = () => {
-        push("/boxtest");
+    const goMakeJson = () => {
+        push("/makejson");
     };
 
     /**
@@ -199,7 +199,7 @@
         <button on:click={testAPI}>실행</button>
     </div>
     <div class="uploadfiles-btn-wrap">
-        <button on:click={goTest}>JSON 생성</button>
+        <button on:click={goMakeJson}>JSON 생성</button>
     </div>
     <div class="system-info-wrap">
         <span class="system-info-title">

@@ -56,7 +56,8 @@ async def class_labeling(request: ClassLabelingDir):
         batch_image_files = image_files[start_i:end_i]
         batch_json_files = json_files[start_i:end_i]
 
-        batch_results = model.predict(source=[os.path.join(images_dir, img) for img in batch_image_files], save=True)
+        # 여기서 Predict된 이미지를 저장할지 안할지 정함 (save=True or save=None)
+        batch_results = model.predict(source=[os.path.join(images_dir, img) for img in batch_image_files], save=None)
 
         for image_path, json_file in zip([os.path.join(images_dir, img) for img in batch_image_files], batch_json_files):
 
@@ -120,5 +121,5 @@ async def class_labeling(request: ClassLabelingDir):
 
                     f.write(f"{class_index} {x_center} {y_center} {width} {height}\n")
                     # x1 + x2 = 2 * x_center * img_width
-  
+
     return {'class_mapping': class_mapping}

@@ -35,7 +35,7 @@ async def make_json(request: Categories):
         ]
     }
 
-    file_path = os.path.join('make_json', f'{image_name}.json')
+    file_path = os.path.join('createdJson', f'{image_name}.json')
     os.makedirs(os.path.dirname(file_path), exist_ok=True)
     with open(file_path, 'w') as f:
         json.dump(data, f, indent=4)
