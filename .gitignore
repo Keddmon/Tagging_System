@@ -9,3 +9,12 @@ API/domain/class_labeling/yolov8x.pt
 runs
 codes
 frontend/node_modules
+images
+API/labels/
+API/failed/
+API/visualized/
+API/failed_images
+API/failed_log
+TOP&BOTTOM(ver.4).pt
+failed_images.txt
+failed_log.csv
